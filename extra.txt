@@ -1,0 +1,225 @@
+private JButton botonIngresoAntenas, botonEditarAntenas, botonSimular, botonSimula;
+    private JTextField numeroMoviles;
+    private JRadioButton rbPeatones, rbCarros;        
+
+//BOTON PARA INGRESAR NUEVA ANTENA
+        /*botonIngresoAntenas = new JButton("INGRESAR ANTENA");
+        botonIngresoAntenas.setSize(150, 30);
+        botonIngresoAntenas.setLocation(10, 85);
+        panelVentanaPrincipal.add(botonIngresoAntenas);
+        botonIngresoAntenas.addActionListener(this);
+        
+        //BOTON PARA EDITAR ANTENA
+        botonEditarAntenas = new JButton("EDITAR ANTENA");
+        botonEditarAntenas.setSize(140, 30);
+        botonEditarAntenas.setLocation(175, 85);
+        panelVentanaPrincipal.add(botonEditarAntenas);
+        botonEditarAntenas.addActionListener(this);
+        */
+
+
+ 
+        //CARROS
+        JLabel textoCarros = new JLabel("------------------CARROS------------------");
+        textoCarros.setFont(new Font("Verdana", Font.LAYOUT_LEFT_TO_RIGHT, 14));
+        textoCarros.setLocation( 10, 295);
+        textoCarros.setSize( 500, 20);
+        panelVentanaPrincipal.add(textoCarros);
+        
+        
+        
+        //BOTON PARA EDITAR CARRO
+        botonEditarAntenas = new JButton("EDITAR CARRO");
+        botonEditarAntenas.setSize(130, 30);
+        botonEditarAntenas.setLocation(100, 160);
+        panelVentanaPrincipal.add(botonEditarAntenas);
+        botonEditarAntenas.addActionListener(this);
+        
+       
+        //Texto Ingresar Numero Peatones
+        JLabel textoNumeroMoviles = new JLabel("Ingresar el Numero de Peatones:");
+        textoNumeroMoviles.setFont(new Font("Verdana", Font.ROMAN_BASELINE, 13));
+        textoNumeroMoviles.setLocation( 30, 225);
+        textoNumeroMoviles.setSize( 240, 20);
+        panelVentanaPrincipal.add(textoNumeroMoviles);
+        //Cuadro Numero Peatones
+        numeroMoviles = new JTextField();
+        numeroMoviles.setLocation( 265, 225);
+        numeroMoviles.setSize( 50, 20);
+        panelVentanaPrincipal.add(numeroMoviles);
+                
+        //BOTON PARA SIMULAR
+        botonSimular = new JButton("SIMULAR");
+        botonSimular.setSize(100, 40);
+        botonSimular.setLocation(120, 250);
+        panelVentanaPrincipal.add(botonSimular);
+        botonSimular.addActionListener(this);
+        
+
+
+
+
+//RADIO BUTTON PEATONES
+        rbPeatones = new JRadioButton("PEATON", true);
+        rbPeatones.setSize(80, 30);
+        rbPeatones.setLocation(40, 360);
+        rbPeatones.setMnemonic(KeyEvent.VK_D);
+        rbPeatones.setActionCommand("radButPeatones");
+        rbPeatones.addActionListener(this);
+        panelVentanaPrincipal.add(rbPeatones);
+        
+        //RADIO BUTTON CARROS
+        rbCarros = new JRadioButton("CARRO", false);
+        rbCarros.setSize(80, 30);
+        rbCarros.setLocation(220, 360);
+        rbCarros.setMnemonic(KeyEvent.VK_D);
+        rbCarros.setActionCommand("radButCarros");
+        rbCarros.addActionListener(this);
+        panelVentanaPrincipal.add(rbCarros);
+        
+
+
+     //ESCOJER NUMERO DE CARRO O PEATON
+        numeroEstacion = new JComboBox();
+        numeroEstacion.setSize(40,25);
+        numeroEstacion.setLocation(90,320);
+        for(int k=0;k<numMovilesPeatones;k++){
+            this.numeroEstacion.addItem(Integer.toString(k));
+        }
+        numeroEstacion.setActionCommand("comboBox");
+        numeroEstacion.addActionListener(this);
+        panelVentanaPrincipal.add(numeroEstacion);
+
+
+//BOTON
+        botonSimula = new JButton("SLAR");
+        botonSimula.setSize(100, 30);
+        botonSimula.setLocation(150, 360);
+        panelVentanaPrincipal.add(botonSimula);
+        botonSimula.addActionListener(this);
+        
+
+        //hilo = new MS(Integer.toString(k));
+        //        hilo.start();
+                
+        ///////////////////////////
+
+
+
+        if (e.getSource()==botonIngresoAntenas) {
+            numAntenas ++;
+            this.vectorAntenasFijas= new Antena[numAntenas];
+            for(int k=0;k<numAntenas;k++){
+                auxStr = JOptionPane.showInputDialog("Ingrese la Posicion X de la Antena " + (k+1));
+                int x = Integer.parseInt(auxStr);
+                auxStr = JOptionPane.showInputDialog("Ingrese la Posicion Y de la Antena " + (k+1));
+                int y = Integer.parseInt(auxStr);
+                //this.vectorAntenas[k] = new Antena(x,y,10,10,3000000);   
+            }
+        
+        }
+
+
+
+        
+        //PROCESO DE BOTON SIMULAR
+        if (e.getSource()==botonSimular) {
+            numMovilesPeatones = Integer.parseInt(this.numeroMoviles.getText());
+            this.vectorMovilesPeatones= new EstacionMovil[numMovilesPeatones];
+            this.vectorHilosPeatones= new MS[numMovilesPeatones];
+            for(int k=0;k<numMovilesPeatones;k++){
+                this.vectorMovilesPeatones[k] = new EstacionMovil();
+                this.vectorHilosPeatones[k] = new MS(Integer.toString(k),"peaton",2);
+                this.vectorHilosPeatones[k].setVectAntenas(this.vectorAntenasFijas);
+            }
+
+            ventanaMapa = new VentanaMapa(this.programaPrincipal);
+            ventanaMapa.setVisible(true);       
+            
+        }
+        
+
+
+        if (e.getSource()==botonSimula) {
+            String titulo= "\tDATOS DE ESTACION MOVIL";
+            String numEstMov = "Numero de Estacion Movil:   "+ String.valueOf(this.numeroEstacionDatosCarro);
+            String vel="";
+            String posiX="";
+            String posiY="";
+            String pot="";
+            String ant="";
+            if (this.rbCarros.isSelected()){
+                vel = "Velocidad:   " + String.valueOf(this.vectorHilosCarros[this.numeroEstacionDatosCarro].velocidad)+" Km/h";
+                posiX = "Posicion en X:   " + String.valueOf(this.vectorHilosCarros[this.numeroEstacionDatosCarro].posicionX);
+                posiY = "Posicion en Y:   " + String.valueOf(this.vectorHilosCarros[this.numeroEstacionDatosCarro].posicionY);
+                pot = "Potencia:   " + String.valueOf(this.vectorHilosCarros[this.numeroEstacionDatosCarro].potencia);
+                ant = "Antena Proveedora:   " + String.valueOf(this.vectorHilosCarros[this.numeroEstacionDatosCarro].antenaActual) +"  (" + this.vectColores[this.vectorHilosCarros[this.numeroEstacionDatosCarro].antenaActual]+")" ;
+            }
+            else{
+                vel = "Velocidad:   " + String.valueOf(this.vectorHilosPeatones[this.numeroEstacionDatosCarro].velocidad)+" Km/h";
+                posiX = "Posicion en X:   " + String.valueOf(this.vectorHilosPeatones[this.numeroEstacionDatosCarro].posicionX);
+                posiY = "Posicion en Y:   " + String.valueOf(this.vectorHilosPeatones[this.numeroEstacionDatosCarro].posicionY);
+                pot = "Potencia:   " + String.valueOf(this.vectorHilosPeatones[this.numeroEstacionDatosCarro].potencia);
+                ant = "Antena Proveedora:   " + String.valueOf(this.vectorHilosPeatones[this.numeroEstacionDatosCarro].antenaActual) +"  (" + this.vectColores[this.vectorHilosPeatones[this.numeroEstacionDatosCarro].antenaActual]+")" ;
+            }
+            
+            this.areaTextoCarro.setText(titulo + "\n" + numEstMov+ "\n" +vel+ "\n" + posiX + "\n" + posiY+ "\n" +pot+ "\n" +ant);
+            
+            this.ventanaMapa.repaint();
+                      
+            
+        }
+
+
+if ("radButPeatones".equals(e.getActionCommand())) {
+            rbCarros.setSelected(false);
+            this.numeroEstacionCarro.removeAllItems();
+            this.condicionCarro = false;
+            for(int k=0;k<numMovilesPeatones;k++){
+                this.numeroEstacionCarro.addItem(Integer.toString(k));
+            }
+        }
+        if ("radButCarros".equals(e.getActionCommand())) {
+            rbPeatones.setSelected(false);
+            this.numeroEstacionCarro.removeAllItems();
+            this.condicionCarro = true;
+            for(int k=0;k<7;k++){
+                this.numeroEstacionCarro.addItem(Integer.toString(k));
+            }
+        }
+
+
+
+
+//g2d.draw( new Ellipse2D.Double(500, 600, 10, 20 ));
+
+ /*int radio = 350;
+ g2d.setColor( Color.RED );
+ g2d.draw( new Ellipse2D.Double(780, 350, radio, radio ));
+ g2d.fill(new Rectangle2D.Double(780, 350, 20, 20));
+ g2d.setColor( Color.BLUE );
+ g2d.draw( new Ellipse2D.Double(780, 40, radio, radio ));
+ g2d.setColor( Color.DARK_GRAY );
+ g2d.draw( new Ellipse2D.Double(780, 660, radio, radio) );
+ g2d.setColor( Color.GREEN );
+ g2d.draw( new Ellipse2D.Double(500, 200, radio, radio ));
+ g2d.setColor( Color.YELLOW );
+ g2d.draw( new Ellipse2D.Double(1060, 200, radio, radio ));
+ g2d.setColor( Color.CYAN );
+ g2d.draw( new Ellipse2D.Double(500, 500, radio, radio ));
+ g2d.setColor( Color.ORANGE );
+ g2d.draw( new Ellipse2D.Double(1060, 500, radio, radio ));
+ g.setFont(null);
+ */
+ //g.setPaintMode();
+
+
+
+        //this.vectorMovilesCarros= new EstacionMovil[7];
+        //this.vectorMovilesCarros[0] = new EstacionMovil();
+        //this.vectorMovilesCarros[1] = new EstacionMovil();
+        //this.vectorMovilesCarros[2] = new EstacionMovil();
+        //this.vectorMovilesCarros[3] = new EstacionMovil();
+        //this.vectorMovilesCarros[4] = new EstacionMovil();
+        //this.vectorMovilesCarros[5] = new EstacionMovil();
+        //this.vectorMovilesCarros[6] = new EstacionMovil();
